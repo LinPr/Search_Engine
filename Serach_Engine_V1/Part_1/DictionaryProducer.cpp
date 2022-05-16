@@ -44,8 +44,8 @@ void DictionaryProducer::buildEnDictionary()
         string word;
         while(ifs >> word)
         { // 过滤停用词，去除标点符号，数字,空格， 转成小写
-
-            if(_stopWords.size() && (_stopWords.find(word) == _stopWords.end())) 
+            
+            if(_stopWords.size() && (_stopWords.find(word) != _stopWords.end())) 
                 { continue; }
                 
             string tmp;
@@ -55,6 +55,9 @@ void DictionaryProducer::buildEnDictionary()
                 if(isalpha(*it))
                     { tmp += tolower(*it); } 
             }   
+            if(_stopWords.find(tmp) != _stopWords.end() || tmp.size() == 0)
+                { continue; }
+
             dictonary[tmp]++;
         }
     }
