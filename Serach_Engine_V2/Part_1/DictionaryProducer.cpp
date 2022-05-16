@@ -17,7 +17,7 @@ using std::ofstream;
 using std::map;
 
 
-DictionaryProducer::DictionaryProducer(string directoryPath, string storePath, string stopWordPath) 
+DictionaryProducer::DictionaryProducer(string directoryPath, string stopWordPath, string storePath) 
 : _directoryPath(directoryPath)
 , _stopWordPath(stopWordPath)
 , _storePath(storePath)
@@ -26,6 +26,7 @@ DictionaryProducer::DictionaryProducer(string directoryPath, string storePath, s
 
     getFilePaths();
     getStopWords();
+
 }
 
 DictionaryProducer::~DictionaryProducer()
@@ -44,8 +45,8 @@ void DictionaryProducer::buildEnDictionary()
         string word;
         while(ifs >> word)
         { // 过滤停用词，去除标点符号，数字,空格， 转成小写
-
-            if(_stopWords.size() && (_stopWords.find(word) == _stopWords.end())) 
+            /* 这里有问题 */
+            if(_stopWords.size() && (_stopWords.find(word) != _stopWords.end())) 
                 { continue; }
                 
             string tmp;
@@ -55,6 +56,9 @@ void DictionaryProducer::buildEnDictionary()
                 if(isalpha(*it))
                     { tmp += tolower(*it); } 
             }   
+            if(_stopWords.find(tmp) != _stopWords.end()) 
+                { continue; }
+                
             dictonary[tmp]++;
         }
     }
@@ -116,6 +120,15 @@ void DictionaryProducer::showDictionary() const
     }
 }
 
+void DictionaryProducer::showStopWords() const
+{
+    for(auto & e : _stopWords)
+    {
+        std::cout << e << " ";
+    }
+    std::cout << std::endl;
+}
+
 void DictionaryProducer::pushDictionary()
 {
     // ??????? what ??
@@ -124,10 +137,16 @@ void DictionaryProducer::pushDictionary()
 
 void DictionaryProducer::showFilePathes() const
 {
+    cout << "DictionaryProducer::showFilePathes()" << endl;
+
     for(auto path : _fliePaths)
     {
         cout << path << endl;
     }
+    cout << _stopWordPath << endl;
+    cout << _storePath << endl;
+
+
 }
 
 void DictionaryProducer::getFilePaths()
@@ -149,10 +168,11 @@ void DictionaryProducer::getFilePaths()
 
 void DictionaryProducer::getStopWords()
 {
+    std::cout << "DictionaryProducer::getStopWords()" << std::endl;
     ifstream ifs(_stopWordPath);
     string stopWord;
     while(ifs >> stopWord)
-    {
+    {   
         _stopWords.insert(stopWord);
     }
 }

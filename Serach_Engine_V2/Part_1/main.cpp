@@ -1,6 +1,7 @@
 #include "DictionaryProducer.h"
 #include <string>
 #include <iostream>
+#include <unistd.h>
 
 using std::string;
 using std::cout;
@@ -14,9 +15,14 @@ int main()
 
     DictionaryProducer dictionary(directoryPath, stopWordPath, storePath);
 
+    
+
+
     dictionary.showFilePathes();
     dictionary.buildEnDictionary();
+
     // dictionary.showDictionary();
+    // dictionary.showStopWords();
     dictionary.buildEnDictionaryIndex();
     dictionary.storeDictionary(storePath);
 }
