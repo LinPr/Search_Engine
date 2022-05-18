@@ -94,14 +94,29 @@ this is search engine project, and also the second project during the period of 
             这部分需要结合整个服务器框架来进行执行
 
             输入n个关键词， 计算每个关键词的权重，拼接成一个X[_w1, _w2..., _wn向量，同时，通过关键词去倒排索引表中查询该这些关键词所在的网页(需要输入的单词在同一篇文章中同时出现)，取出每个单词在该文章中的权重组成一个向量 Y[w1, w2, ...wn], 这意味着两个向量是同样的维度，因此才能够计算余弦相似度
+            我焯，这一部分属于是数学，针对嵌套容器操作有点复杂，理清楚逻辑关系就绪，其他到没有什么比较难的地方
       
+      注意事项：
+     
       错误写法, 使用下标运算符作为等号右边可能使得程序崩溃
       // auto value = _cachesManager._LRUCacheGroup[thid].getValue(_userInputWord)
       
-      正确写法注意使用 at，使用at会进行检查
+      注意使用 at，使用at会进行检查
       auto value = _cachesManager._LRUCacheGroup.at(thid).getValue(_userInputWord);
 
-      
+
+      set_intersection 对容器元素取交集的时候需要操作的容器必须是有序的容器
+      set_intersection 可以填入一个适配器参数，让容器能实现对pair的第一个元素取交集
+
+
+
+
+
+#### 协议解析
+      实现一个自定义的协议解析单元，参考网络协议的实现原理，客户端发送数据时，在【原始数据rawData】头部添加一个【协议号 protocol_ID】,将其打包 用于区分不同的命令， 服务器收到客户端发送的数据包，先将其按照约定好的规则进行解析，将其拆分为【协议号】 和【原始数据】，对协议号进行判断，将原始数据打包成对应不同的任务来执行
+
+      [1]<--->[100] 关键词推荐任务
+      [2]<--->[200] 网页搜索任务
 
       
 

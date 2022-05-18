@@ -1,0 +1,3 @@
+xmlDirectoryPaths   ../en_people_cnrss
+stopWordsPath       ../StopWordsLib/stop_words_eng.txt
+parsedPagesPath     ../ParsedPages
